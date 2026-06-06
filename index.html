@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aqua — Daily Hydration Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient background orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-drop">◈</span>
+        <span class="logo-text">aqua</span>
+      </div>
+      <div class="streak-badge" id="streakBadge">
+        <span class="streak-icon">🔥</span>
+        <span id="streakCount">0</span>
+        <span class="streak-label">day streak</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="date-display" id="dateDisplay"></span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon" id="themeIcon">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN LAYOUT
+  ═══════════════════════════════════════════ -->
+  <main class="app-main">
+
+    <!-- LEFT COLUMN: Bottle + Controls -->
+    <section class="column-left">
+
+      <!-- Water Bottle Visualization -->
+      <div class="bottle-container">
+        <div class="bottle-label-top" id="percentLabel">0%</div>
+        <div class="bottle-wrap">
+          <div class="bottle-cap"></div>
+          <div class="bottle-body">
+            <div class="bottle-fill" id="bottleFill">
+              <div class="wave wave-1"></div>
+              <div class="wave wave-2"></div>
+              <div class="fill-liquid" id="fillLiquid"></div>
+            </div>
+            <!-- Measurement lines -->
+            <div class="measure-lines">
+              <span class="m-line" style="bottom:75%"><em>75%</em></span>
+              <span class="m-line" style="bottom:50%"><em>50%</em></span>
+              <span class="m-line" style="bottom:25%"><em>25%</em></span>
+            </div>
+          </div>
+          <div class="bottle-base"></div>
+        </div>
+        <div class="bottle-label-bottom">
+          <span id="glassesToday">0</span> / <span id="goalDisplay">8</span> glasses
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-cluster">
+        <button class="btn-drink" id="btnDrink" aria-label="Add a glass of water">
+          <span class="btn-ripple"></span>
+          <span class="btn-icon">💧</span>
+          <span class="btn-text">Drink a Glass</span>
+          <span class="btn-sub">+250 ml</span>
+        </button>
+        <div class="secondary-btns">
+          <button class="btn-secondary btn-undo" id="btnUndo" aria-label="Undo last glass">
+            ↩ Undo
+          </button>
+          <button class="btn-secondary btn-reset" id="btnReset" aria-label="Reset today">
+            ✕ Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Goal Setting -->
+      <div class="goal-panel glass-card">
+        <label class="goal-label">Daily Goal</label>
+        <div class="goal-input-row">
+          <button class="goal-stepper" id="goalDown" aria-label="Decrease goal">−</button>
+          <div class="goal-value-wrap">
+            <input type="number" id="goalInput" class="goal-input" value="8" min="1" max="20" />
+            <span class="goal-unit">glasses</span>
+          </div>
+          <button class="goal-stepper" id="goalUp" aria-label="Increase goal">+</button>
+        </div>
+        <button class="btn-set-goal" id="btnSetGoal">Set Goal</button>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: Stats + Tips -->
+    <section class="column-right">
+
+      <!-- Motivational message -->
+      <div class="motive-banner glass-card" id="motiveBanner">
+        <span class="motive-icon">🌊</span>
+        <p class="motive-text" id="motiveText">Stay hydrated — your body is 60% water.</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card glass-card" id="cardConsumed">
+          <div class="stat-icon">🥤</div>
+          <div class="stat-value" id="statGlasses">0</div>
+          <div class="stat-label">Glasses Today</div>
+        </div>
+        <div class="stat-card glass-card" id="cardRemaining">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-value" id="statRemaining">8</div>
+          <div class="stat-label">Remaining</div>
+        </div>
+        <div class="stat-card glass-card" id="cardLiters">
+          <div class="stat-icon">💦</div>
+          <div class="stat-value" id="statLiters">0.0L</div>
+          <div class="stat-label">Liters Today</div>
+        </div>
+        <div class="stat-card glass-card" id="cardPct">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value" id="statPct">0%</div>
+          <div class="stat-label">Goal Progress</div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-section glass-card">
+        <div class="progress-header">
+          <span class="progress-title">Hydration Progress</span>
+          <span class="progress-pct-label" id="progressPctLabel">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill">
+            <div class="progress-shimmer"></div>
+          </div>
+        </div>
+        <div class="progress-status" id="progressStatus">Keep going — you're just getting started!</div>
+      </div>
+
+      <!-- Hydration Status Indicator -->
+      <div class="status-card glass-card">
+        <div class="status-header">Hydration Status</div>
+        <div class="status-display" id="statusDisplay">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Not Started</span>
+        </div>
+        <div class="status-bar-wrap">
+          <div class="status-zone zone-low">Low</div>
+          <div class="status-zone zone-ok">Ok</div>
+          <div class="status-zone zone-good">Good</div>
+          <div class="status-zone zone-great">Great</div>
+        </div>
+        <div class="status-pointer-track">
+          <div class="status-pointer" id="statusPointer"></div>
+        </div>
+      </div>
+
+      <!-- Tip of the moment -->
+      <div class="tip-card glass-card">
+        <div class="tip-header">
+          <span>💡</span>
+          <span>Hydration Tip</span>
+        </div>
+        <p class="tip-text" id="tipText">Drink a glass of water first thing in the morning to kickstart your metabolism.</p>
+        <button class="btn-next-tip" id="btnNextTip">Next Tip →</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       ACHIEVEMENT OVERLAY
+  ═══════════════════════════════════════════ -->
+  <div class="achievement-overlay" id="achievementOverlay" aria-hidden="true">
+    <div class="achievement-card">
+      <div class="achievement-sparkles" id="sparkles"></div>
+      <div class="achievement-badge">🏆</div>
+      <h2 class="achievement-title">Goal Reached!</h2>
+      <p class="achievement-sub">You've hit your hydration goal for today.</p>
+      <p class="achievement-streak">Keep it up for your streak! 🔥</p>
+      <button class="btn-achievement-close" id="btnAchievementClose">Continue</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TOAST NOTIFICATIONS
+  ═══════════════════════════════════════════ -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
